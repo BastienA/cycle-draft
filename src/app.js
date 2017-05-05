@@ -22,13 +22,22 @@ export function App(sources) {
             .map(
                 ([user, toggle, collectionVTree]) => {
                     return (
-                        <div className="ui container">
-                            <span>My Awesome Cycle.js <br/>{toggle ? 'Toggled' : 'Not toggle' }</span>
-                            <hr/>
-                            <input type="checkbox" name="checked" id="checked"/> <i className="ticket icon"></i>
-                            <hr/>
-                            {user}
-                            {collectionVTree}
+                        <div className="ui padded container">
+                            <div className="ui grid">
+                                <div className="sixteen wide column">
+                                    <h1 className="ui header">My Awesome Cycle.js
+                                        <div className="sub header">How do you like them apples?</div>
+                                    </h1>
+                                </div>
+                                <div className="sixteen wide column">
+
+                                    {user}
+                                </div>
+                                <div className="sixteen wide column">
+
+                                    {collectionVTree}
+                                </div>
+                            </div>
                         </div>)
                 });
 

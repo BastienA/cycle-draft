@@ -8,8 +8,7 @@ export const Collection = (sources) => {
 
     const clickMovies$ = sources.DOM.select('.movies').events('click').map(() => 'movies');
     const clickTV$ = sources.DOM.select('.tvs').events('click').map(() => 'tvs');
-    const clickAudio$ = sources.DOM.select('.audios').events('click').map(() => 'audios');
-    const getCollection$ = xs.merge(clickMovies$, clickTV$, clickAudio$)
+    const getCollection$ = xs.merge(clickMovies$, clickTV$)
         .map(category => ({
             url: `http://54.72.215.193/api/metadata/${category}`,
             category: 'collection',
@@ -24,15 +23,26 @@ export const Collection = (sources) => {
 
     const vtree$ = collection$.map(collection => (
         <div>
-            <div>
-                <button className="movies">Movies</button>
-                <button className="tvs">TV</button>
-                <button className="audios">Audio</button>
+            <div className="ui buttons">
+                <button className="ui red button movies">Movies</button>
+                <button className="ui orange button tvs">TV</button>
             </div>
-            <div>
+            <div className="ui link cards">
                 {collection.map(media => (
-                    <span>{media.title}</span>
+                    <div className="card">
+                        <div className="image">
+                            <img src={'http://54.72.215.193/resource/images/'+media.posterImage300x450} alt=""/>
+                        </div>
+                        <div className="content">
+                            <div className="header">{media.title}</div>
+                            <div className="meta">{media.category}</div>
+                            <div className="description">
+                                {media.synopsis[0].text}
+                            </div>
+                        </div>
+                    </div>
                 ))}
+
             </div>
         </div>
     ));

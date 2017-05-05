@@ -21,10 +21,16 @@ export function NewUser(sources) {
 
     const vtree$ = user$.map(user => (
             <div>
-                <button className="get-random">Get random user</button>
+                <button className="get-random ui button">Get random user</button>
                 <br/>
                 {user ? (
-                    <div><span>Name: {user.name}</span></div>
+                    <div className="ui card">
+                        <div className="content">
+                            <div className="header">{user.name}</div>
+                            <div className="meta">{user.email}</div>
+                            <div className="description">{user.company.catchPhrase}</div>
+                        </div>
+                    </div>
                 ) : ''}
             </div>
         ));
