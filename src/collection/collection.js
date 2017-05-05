@@ -15,6 +15,12 @@ export const Collection = (sources) => {
             method: 'GET'
         }));
 
+    const mediaLinkClick$ = sources.DOM
+        .select('.media-collection')
+        .select('.card')
+        .events('click')
+        .map(ev => ev.currentTarget.id);
+
 
     const keyLocalStorage = 'metadata-local';
     const collectionStorage$ = sources.HTTP.select('collection')
@@ -40,9 +46,9 @@ export const Collection = (sources) => {
                 <button className="ui red button movies">Movies</button>
                 <button className="ui orange button tvs">TV</button>
             </div>
-            <div className="ui link cards">
+            <div className="media-collection ui link cards">
                 {collection.map(media => (
-                    <div className="card">
+                    <div className="card" id={media._id}>
                         <div className="image">
                             <img src={'http://54.72.215.193/resource/images/'+media.posterImage300x450} alt=""/>
                         </div>
@@ -62,6 +68,7 @@ export const Collection = (sources) => {
     return {
         DOM: vtree$,
         storage: collectionStorage$,
-        HTTP: getCollection$
+        HTTP: getCollection$,
+        router: mediaLinkClick$.map(id => `/detail/${id}`)
     }
 };

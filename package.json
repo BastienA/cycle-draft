@@ -4,6 +4,7 @@
   "private": true,
   "devDependencies": {
     "autoprefixer": "^6.7.7",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "css-loader": "^0.28.1",
     "cycle-scripts": "1.1.0",
     "extract-loader": "^0.1.0",
@@ -21,12 +22,16 @@
   ],
   "dependencies": {
     "@cycle/dom": "^17.1.0",
+    "@cycle/history": "^6.1.0",
     "@cycle/http": "^13.2.0",
     "@cycle/run": "^3.1.0",
     "@cycle/storage": "^4.0.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
+    "cyclic-router": "^4.0.3",
+    "history": "^4.6.1",
     "semantic-ui-css": "^2.2.10",
     "snabbdom-jsx": "^0.3.1",
+    "switch-path": "^1.2.0",
     "xstream": "^10.5.0"
   },
   "scripts": {
@@ -45,7 +50,8 @@
         "transform-react-jsx",
         {
           "pragma": "html"
-        }
+        },
+        "transform-object-rest-spread"
       ]
     ]
   }

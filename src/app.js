@@ -2,9 +2,10 @@ import {html} from 'snabbdom-jsx';
 import {NewUser}from './new-user/new-user';
 import xs from 'xstream';
 import {Collection} from "./collection/collection";
+
+
 import 'semantic-ui-css/semantic.css';
 export function App(sources) {
-
 
     const toggle$ = sources.DOM.select('#checked').events('click')
         .map(ev => ev.target.checked)
@@ -46,7 +47,8 @@ export function App(sources) {
     const sinks = {
         DOM: vtree$,
         storage: storage$,
-        HTTP: http$
+        HTTP: http$,
+        router: collection.router
     };
     return sinks
 }
