@@ -16,12 +16,25 @@ export const Collection = (sources) => {
         }));
 
 
-    const collection$ = sources.HTTP.select('collection')
+    const keyLocalStorage = 'metadata-local';
+    const collectionStorage$ = sources.HTTP.select('collection')
         .flatten()
         .map(res => res.body)
+        .map(collection => ({
+            key: keyLocalStorage,
+            value: JSON.stringify(collection)
+        }));
+
+    const collection$ = sources
+        .storage.local
+        .getItem(keyLocalStorage)
+        .map(JSON.parse)
         .startWith([]);
 
-    const vtree$ = collection$.map(collection => (
+
+
+    const vtree$ = collection$
+        .map(collection => (
         <div>
             <div className="ui buttons">
                 <button className="ui red button movies">Movies</button>
@@ -48,6 +61,7 @@ export const Collection = (sources) => {
     ));
     return {
         DOM: vtree$,
+        storage: collectionStorage$,
         HTTP: getCollection$
     }
 };

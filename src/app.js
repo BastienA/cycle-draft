@@ -42,9 +42,10 @@ export function App(sources) {
                 });
 
     const http$ = xs.merge(newUser.HTTP, collection.HTTP);
-
+    const storage$ = xs.merge(newUser.storage, collection.storage);
     const sinks = {
         DOM: vtree$,
+        storage: storage$,
         HTTP: http$
     };
     return sinks

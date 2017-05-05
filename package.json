@@ -23,6 +23,7 @@
     "@cycle/dom": "^17.1.0",
     "@cycle/http": "^13.2.0",
     "@cycle/run": "^3.1.0",
+    "@cycle/storage": "^4.0.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "semantic-ui-css": "^2.2.10",
     "snabbdom-jsx": "^0.3.1",

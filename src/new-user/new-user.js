@@ -14,12 +14,20 @@ export function NewUser(sources) {
         }
     });
 
-    const user$ = sources.HTTP.select('users')
+    const userStorage$ = sources.HTTP.select('users')
         .flatten()
         .map(res => res.body)
-        .startWith(null);
+        .map(user => ({
+            key: 'users-local',
+            value: JSON.stringify(user)
+        }));
 
-    const vtree$ = user$.map(user => (
+    const vtree$ = sources
+        .storage.local
+        .getItem('users-local')
+        .map(JSON.parse)
+        .startWith(null)
+        .map(user => (
             <div>
                 <button className="get-random ui button">Get random user</button>
                 <br/>
@@ -38,7 +46,7 @@ export function NewUser(sources) {
 
     return {
         DOM: vtree$,
-        user: user$,
+        storage: userStorage$,
         HTTP: getRandomUser$
     };
 }
