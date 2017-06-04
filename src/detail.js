@@ -14,8 +14,6 @@ export const Detail = (sources) => {
     const selectedMedia$ = xs.combine(mediaId$, mediaCollection$)
         .map(([id, collection]) => {
             const find = collection.filter(media => media._id === id);
-            console.log(JSON.stringify(find));
-            console.log(JSON.stringify(id));
             if (find.length > 0) {
                 return find[0]
             }
@@ -24,12 +22,21 @@ export const Detail = (sources) => {
 
     const vtree$ = selectedMedia$
         .map(media => {
+            let source;
+            if (media) {
+                const strippedName = ['web/movies', media.title.replace(/\W+|_+/g, "").toLowerCase(), media.uuid].join('_');
+                source = `http://54.72.215.193/${strippedName}.mp4`;
+            }
+
             return (
                 <div>
                     {media ? (
-                        <div className="ui container segment">
+                        <div className="ui container">
                             <img className="ui fluid image"
                                  src={`http://54.72.215.193/resource/images/${media.sliderImage1024x400}`}/>
+                            <video width="320" height="240" controls>
+                                <source src={source} type="video/mp4"/>
+                            </video>
                             <div className="very padded text container segment">
                                 <h2 className="ui header">{media.title}</h2>
                             </div>

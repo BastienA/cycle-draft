@@ -8,6 +8,10 @@ export const Collection = (sources) => {
 
     const clickMovies$ = sources.DOM.select('.movies').events('click').map(() => 'movies');
     const clickTV$ = sources.DOM.select('.tvs').events('click').map(() => 'tvs');
+    const clickList$ = sources.DOM.select('#display-list').events('click').map(() => 'list');
+    const clickCard$ = sources.DOM.select('#display-card').events('click').map(() => 'card');
+
+
     const getCollection$ = xs.merge(clickMovies$, clickTV$)
         .map(category => ({
             url: `http://54.72.215.193/api/metadata/${category}`,
@@ -15,9 +19,12 @@ export const Collection = (sources) => {
             method: 'GET'
         }));
 
+    const styleCollection$ = xs.merge(clickList$, clickCard$)
+        .startWith('card');
+
     const mediaLinkClick$ = sources.DOM
         .select('.media-collection')
-        .select('.card')
+        .select('.media-item')
         .events('click')
         .map(ev => ev.currentTarget.id);
 
@@ -37,34 +44,57 @@ export const Collection = (sources) => {
         .map(JSON.parse)
         .startWith([]);
 
+    const data$ = xs.combine(collection$, styleCollection$)
 
-
-    const vtree$ = collection$
-        .map(collection => (
-        <div>
-            <div className="ui buttons">
-                <button className="ui red button movies">Movies</button>
-                <button className="ui orange button tvs">TV</button>
-            </div>
-            <div className="media-collection ui link cards">
-                {collection.map(media => (
-                    <div className="card" id={media._id}>
-                        <div className="image">
-                            <img src={'http://54.72.215.193/resource/images/'+media.posterImage300x450} alt=""/>
+    const vtree$ = data$
+        .map(([collection, style]) => (
+            <div>
+                <div className="ui buttons">
+                    <button className="ui red button movies">Movies</button>
+                    <button className="ui orange button tvs">TV</button>
+                </div>
+                <button className={style === 'list' ? 'ui button active' : 'ui button'} id="display-list">List</button>
+                <button className={style === 'card' ? 'ui button active' : 'ui button'} id="display-card">Card</button>
+                {style === 'card' ?
+                    (
+                        <div className="media-collection ui link cards">
+                            {collection.map(media => (
+                                <div className="fluid card media-item" id={media._id}>
+                                    <div className="image">
+                                        <img src={'http://54.72.215.193/resource/images/' + media.posterImage300x450}
+                                             alt=""/>
+                                    </div>
+                                    <div className="content">
+                                        <div className="header">{media.title}</div>
+                                        <div className="meta">{media.category}</div>
+                                        <div className="description">
+                                            {media.synopsis[0].text}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                        <div className="content">
-                            <div className="header">{media.title}</div>
-                            <div className="meta">{media.category}</div>
-                            <div className="description">
-                                {media.synopsis[0].text}
-                            </div>
+                    ) : (
+                        <div className="media-collection ui list">
+                            {collection.map(media => (
+                                <div className="item media-item" id={media._id}>
+                                    <img src={'http://54.72.215.193/resource/images/' + media.posterImage300x450}
+                                         className="ui avatar image"
+                                         alt=""/>
+                                    <div className="content">
+                                        <div className="header">{media.title}</div>
+                                        <div className="description">
+                                            {media.category}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    </div>
-                ))}
+                    )
 
+                }
             </div>
-        </div>
-    ));
+        ));
     return {
         DOM: vtree$,
         storage: collectionStorage$,
