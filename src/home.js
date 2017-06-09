@@ -1,14 +1,22 @@
 import {html} from 'snabbdom-jsx';
 import xs from 'xstream';
-export const Home = () => {
+import {FormUser} from "./form-user/form-user";
 
+export const Home = (sources) => {
 
-    const vtree$ = xs.of(
+    const form = FormUser(sources);
+
+    const vtree$ = form.DOM.map(formValue => {return (
         <div>
-            Hello Other
+            <span>Hello Other</span>
+            {formValue}
         </div>
+        )}
     );
     return {
+        HTTP:  xs.empty(),
+        storage:  xs.empty(),
+        router: xs.empty(),
         DOM: vtree$
     }
-}
+};

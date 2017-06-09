@@ -5,7 +5,7 @@ import {makeHTTPDriver} from '@cycle/http';
 import storageDriver from '@cycle/storage';
 import {App} from './app';
 import {Home} from './home'
-import {Detail} from './detail';
+import {Detail} from './detail/detail';
 
 
 import {makeRouterDriver} from 'cyclic-router';

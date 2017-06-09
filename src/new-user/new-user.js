@@ -2,9 +2,11 @@
  * Created by bastien on 11/04/2017.
  */
 import {html} from 'snabbdom-jsx';
+import xs from 'xstream';
 
 export function NewUser(sources) {
     const clicks$ = sources.DOM.select('.get-random').events('click');
+    const newUserClick$ = sources.DOM.select('.create-new-user').events('click');
     const getRandomUser$ = clicks$.map(() => {
         const randomNumber = Math.round(Math.random() * 9) + 1;
         return {
@@ -13,6 +15,9 @@ export function NewUser(sources) {
             method: 'GET'
         }
     });
+
+    const goToNewUser$ = newUserClick$.map(() => '/other');
+
 
     const userStorage$ = sources.HTTP.select('users')
         .flatten()
@@ -30,6 +35,7 @@ export function NewUser(sources) {
         .map(user => (
             <div>
                 <button className="get-random ui button">Get random user</button>
+                <button className="create-new-user ui button">Create new user</button>
                 <br/>
                 {user ? (
                     <div className="ui card">
@@ -47,6 +53,7 @@ export function NewUser(sources) {
     return {
         DOM: vtree$,
         storage: userStorage$,
-        HTTP: getRandomUser$
+        HTTP: getRandomUser$,
+        router: goToNewUser$
     };
 }

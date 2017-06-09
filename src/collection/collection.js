@@ -42,9 +42,10 @@ export const Collection = (sources) => {
         .storage.local
         .getItem(keyLocalStorage)
         .map(JSON.parse)
+        .filter(elem => elem != null)
         .startWith([]);
 
-    const data$ = xs.combine(collection$, styleCollection$)
+    const data$ = xs.combine(collection$, styleCollection$);
 
     const vtree$ = data$
         .map(([collection, style]) => (

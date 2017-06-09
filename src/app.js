@@ -26,16 +26,14 @@ export function App(sources) {
                         <div className="ui padded container">
                             <div className="ui grid">
                                 <div className="sixteen wide column">
-                                    <h1 className="ui header">My Awesome Cycle.js
+                                    <h1 className="ui header">Cycle.js
                                         <div className="sub header">How do you like them apples?</div>
                                     </h1>
                                 </div>
                                 <div className="sixteen wide column">
-
                                     {user}
                                 </div>
                                 <div className="sixteen wide column">
-
                                     {collectionVTree}
                                 </div>
                             </div>
@@ -44,11 +42,12 @@ export function App(sources) {
 
     const http$ = xs.merge(newUser.HTTP, collection.HTTP);
     const storage$ = xs.merge(newUser.storage, collection.storage);
+    const router$ = xs.merge(newUser.router, collection.router);
     const sinks = {
         DOM: vtree$,
         storage: storage$,
         HTTP: http$,
-        router: collection.router
+        router: router$
     };
     return sinks
 }

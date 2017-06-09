@@ -5,6 +5,8 @@ export const Detail = (sources) => {
     const mediaId$ = sources.props$;
     const keyLocalStorage = 'metadata-local';
 
+    const goBackClick$ = sources.DOM.select('#goBackButton').events('click');
+
     const mediaCollection$ = sources
         .storage.local
         .getItem(keyLocalStorage)
@@ -45,6 +47,7 @@ export const Detail = (sources) => {
                         <h2 className="ui header">No Data</h2>
                     )
                     }
+                    <button className="ui button" id="goBackButton">Back</button>
                 </div>
 
             )
